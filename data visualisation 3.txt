@@ -1,0 +1,44 @@
+Practical 10: 
+Data Visualization III 
+Download the Iris flower dataset or any other dataset into a DataFrame. Scan the dataset and  give the inference as: 
+1. List down the features and their types (e.g., numeric, nominal) available in the dataset. 2. Create a histogram for each feature in the dataset to illustrate the feature distributions. 3. Create a boxplot for each feature in the dataset. 
+4. Compare distributions and identify outliers. 
+
+import numpy as np 
+import matplotlib.pyplot as plt 
+import pandas as pd 
+import seaborn as sns 
+df = pd.read_csv('Iris.csv') 
+df.isnull().sum() 
+df.info() 
+np.unique(df["Species"]) 
+df.describe() 
+
+fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 8)) 
+sns.histplot(df['SepalLengthCm'], kde=True, color='blue', ax = axes[0,0]) 
+axes[0,0].set_title('Sepal Length') 
+sns.histplot(df['SepalWidthCm'], kde=True, color='green', ax = axes[0,1]) 
+axes[0,1].set_title('Sepal Width') 
+sns.histplot(df['PetalLengthCm'], kde=True, color='yellow', ax = axes[1,0]) 
+axes[1,0].set_title('Petal Length') 
+sns.histplot(df['PetalWidthCm'], kde=True, color='red', ax = axes[1,1]) 
+axes[1,1].set_title('Petal Width') 
+plt.tight_layout() 
+plt.show() 
+
+fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 8)) 
+sns.boxplot(df['SepalLengthCm'], color='blue', ax = axes[0,0]) 
+axes[0,0].set_title('Sepal Length') 
+sns.boxplot(df['SepalWidthCm'], color='green', ax = axes[0,1]) 
+axes[0,1].set_title('Sepal Width') 
+sns.boxplot(df['PetalLengthCm'], color='yellow', ax = axes[1,0]) 
+axes[1,0].set_title('Petal Length')
+sns.boxplot(df['PetalWidthCm'], color='red', ax = axes[1,1]) 
+axes[1,1].set_title('Petal Width') 
+plt.tight_layout() 
+plt.show() 
+
+data_to_plot = [df[x] for x in df.columns[0:4]] 
+fig, axes = plt.subplots(1, figsize=(12,8)) 
+bp = axes.boxplot(data_to_plot)
+

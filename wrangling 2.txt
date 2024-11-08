@@ -1,0 +1,60 @@
+Practical 2: 
+Create an “Academic performance” dataset of students and perform the following operations  using Python. 
+1. Scan all variables for missing values and inconsistencies. If there are missing values and/or  inconsistencies, use any of the suitable techniques to deal with them. 
+2. Scan all numeric variables for outliers. If there are outliers, use any of the suitable  techniques to deal with them. 
+3. Apply data transformations on at least one of the variables. The purpose of this  transformation should be one of the following reasons: 
+to change the scale for better understanding of the variable, to convert a non-linear relation  into a linear one, or to decrease the skewness and convert the distribution into a normal  distribution. 
+Reason and document your approach properly. 
+-----------------------------------------------------------
+import numpy as np 
+import pandas as pd 
+import seaborn as sns 
+import matplotlib.pyplot as plt 
+from scipy import stats 
+from sklearn.preprocessing import MinMaxScaler
+
+# Load dataset
+df = pd.read_csv("Pr2.csv") 
+
+# Data overview and check for missing values
+print(df)
+print(df.describe()) 
+print(df.info()) 
+print(df.isnull().sum()) 
+
+# Handle missing values in 'Discussion' column
+avg_val = df["Discussion"].astype("float").mean()
+df['Discussion'].replace(to_replace=np.nan, value=avg_val, inplace=True)
+print(df.isnull().sum())
+
+# Visualizations
+sns.boxplot(x=df['AnnouncementsView']) 
+plt.show() 
+sns.regplot(x='Sno', y='AnnouncementsView', data=df) 
+plt.show() 
+
+# Outlier detection and replacement
+z = np.abs(stats.zscore(df['AnnouncementsView']))
+threshold = 3 
+print(np.where(z > threshold)) 
+avg_val = int(df[df.index != 419]["AnnouncementsView"].mean())
+df.at[419, 'AnnouncementsView'] = avg_val
+sns.boxplot(x=df['AnnouncementsView']) 
+plt.show() 
+
+# MinMax Scaling
+scaler = MinMaxScaler()
+discussion_values = df['Discussion'].values.reshape(-1, 1)
+df['Discussion_scaled'] = scaler.fit_transform(discussion_values)
+
+# Plot original and scaled distributions
+plt.figure(figsize=(12, 6))
+plt.subplot(1, 2, 1)
+sns.histplot(df['Discussion'], kde=True, color='blue') 
+plt.title('Original Distribution')
+plt.subplot(1, 2, 2)
+sns.histplot(df['Discussion_scaled'], kde=True, color='green') 
+plt.title('MinMaxScaled Distribution')
+plt.tight_layout()
+plt.show()
+

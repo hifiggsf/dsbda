@@ -1,0 +1,60 @@
+Practical 1: 
+Import all the required Python Libraries. 
+Locate an open source data from the web (e.g., https://www.kaggle.com). 
+Provide a clear  description of the data and its source (i.e., URL of the web site). 
+Load the Dataset into pandas dataframe. 
+Data Preprocessing: 
+Check for missing values in the data using pandas isnull()
+describe() function to get some initial statistics
+Provide variable descriptions. Types of variables etc. Check the dimensions of the data frame. 
+Data Formatting and Data Normalization: 
+Summarize the types of variables by checking the data types of the variables (i.e., character, numeric, integer, factor, and logical). 
+If variables are not in the correct data type,  apply proper type conversions. 
+Turn categorical variables into quantitative variables in Python 
+
+# Importing the required Python libraries
+import pandas as pd 
+import numpy as np 
+
+# Loading the dataset into a pandas DataFrame
+df = pd.read_csv('Pr1.csv')  # Replace 'Pr1.csv' with the path to your dataset
+
+# Displaying the DataFrame to get an overview of the data
+df 
+
+# Generating descriptive statistics for the DataFrame
+df.describe() 
+
+# Checking for missing values in the DataFrame
+df.isnull() 
+
+# Summing the missing values for each column to get a clear count
+df.isnull().sum() 
+
+# Providing information about the DataFrame, including data types and non-null counts
+df.info() 
+
+# Checking the dimensions of the DataFrame (number of rows and columns)
+df.shape 
+
+# Summarizing the data types of the variables in the DataFrame
+df.dtypes 
+
+# Data Preprocessing: Replacing NaN values with 0.0 (or you could choose a different strategy)
+df = df.replace(to_replace=np.nan, value=0.0) 
+
+# Displaying the DataFrame after replacing NaN values
+df 
+
+# Converting categorical variable 'Gender' into quantitative variables (0 for 'F', 1 for 'M')
+df['Gender'].replace(to_replace=['F', 'M'], value=[0, 1], inplace=True) 
+
+# Displaying the DataFrame after converting 'Gender'
+df 
+
+# Grouping the DataFrame by the 'Division' column
+df2 = df.groupby('Division') 
+
+# Getting the group of data where 'Division' is 'A'
+df2.get_group('A')
+
