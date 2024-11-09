@@ -1,0 +1,27 @@
+import pandas as pd
+import numpy as np
+from scipy import stats
+from sklearn.preprocessing import MinMaxScaler
+import warnings; warnings.filterwarnings('ignore')
+
+df = pd.read_csv('Males.csv')
+
+df.isnull().sum()
+
+avg_val = df["Age"].astype("float").mean() 
+df['Age'].replace(to_replace=np.nan, value=avg_val, inplace=True)
+
+df.describe()
+df.info()
+
+df = df.convert_dtypes()
+
+df['union'] = df['union'].map({'yes': 1, 'no': 0})
+
+z_scores = np.abs(stats.zscore(df['GPA']))
+df['GPA'] = np.where(z_scores > 3, df['GPA'].median(), df['GPA'])
+
+scaler = MinMaxScaler()
+df['GPA_scaled'] = scaler.fit_transform(df[['GPA']])
+
+df.head()
